@@ -1,0 +1,56 @@
+---
+description: com.spacetime.effect 只能在独立 git 中修改与提交
+alwaysApply: true
+---
+
+# com.spacetime.effect 修改规范
+
+本仓库中的 `Packages/com.spacetime.effect` 是 **git submodule 引用**，不是包源码的开发与提交流水线。
+
+## 强制约定
+
+修改 `com.spacetime.effect` 时：
+
+1. **只编辑**独立仓库目录：
+   `D:\xieliujian\com.spacetime.core\Packages\com.spacetime.effect`
+2. **只在该目录的独立 git 中** `add` / `commit` / `push`
+3. **禁止**在本 sample 仓库内对 `Packages/com.spacetime.effect/**` 直接改代码并提交
+4. **禁止**在本 sample 仓库里对 submodule 做「在 submodule 内 commit 再把指针推到 sample」作为常规改包方式
+
+## 正确流程
+
+```text
+# 1. 在独立仓库改代码并提交
+cd D:\xieliujian\com.spacetime.core\Packages\com.spacetime.effect
+# ... edit ...
+git add .
+git commit -m "..."
+git push
+
+# 2. 如需本 sample 跟上新提交：仅更新 submodule 指针
+cd D:\xieliujian\com.spacetime.effect.sample.urpscenegray
+git -C Packages/com.spacetime.effect fetch
+git -C Packages/com.spacetime.effect checkout <commit>
+git add Packages/com.spacetime.effect
+git commit -m "Bump com.spacetime.effect submodule"
+```
+
+## 本仓库可改范围
+
+允许直接修改并提交本 sample 工程自身内容，例如：
+
+- `Assets/`
+- `ProjectSettings/`
+- `Packages/manifest.json`、`Packages/packages-lock.json`
+- `UserSettings/`、`README.md`、`.gitignore`、项目规范文件
+
+## 反例
+
+```text
+# ❌ BAD：在 sample 的 submodule 工作副本里改包并当作主开发路径
+cd Packages/com.spacetime.effect
+# edit + commit here as primary workflow
+
+# ✅ GOOD：始终回到独立 git
+cd D:\xieliujian\com.spacetime.core\Packages\com.spacetime.effect
+```
