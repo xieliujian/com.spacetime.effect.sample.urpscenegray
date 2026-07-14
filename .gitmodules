@@ -1,0 +1,3 @@
+[submodule "Packages/com.spacetime.effect"]
+	path = Packages/com.spacetime.effect
+	url = git@github.com:xieliujian/com.spacetime.effect.git
